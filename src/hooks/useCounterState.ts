@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import counterService from "../services/counter";
 
-export const useCounterContext = <T>(selector: (state: any) => T) => {
+export const useCounterState = <T>(selector: (state: any) => T) => {
   const snapshot = counterService.getSnapshot();
   const [stateFromMachine, setStateFromMachine] = useState<{
     value: any;
@@ -10,7 +10,9 @@ export const useCounterContext = <T>(selector: (state: any) => T) => {
 
   useEffect(() => {
     const { unsubscribe } = counterService.subscribe((state) => {
+      console.log("MOUNT!");
       if (!state.changed) return;
+      console.log("state changed!");
       setStateFromMachine({
         value: state.value,
         context: selector(state.context)
@@ -20,7 +22,7 @@ export const useCounterContext = <T>(selector: (state: any) => T) => {
     return () => {
       unsubscribe();
     };
-  });
+  }, []);
 
   return useMemo(() => {
     return stateFromMachine;
