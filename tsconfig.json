@@ -14,7 +14,8 @@
         "moduleResolution": "node",
         "types": [
             "core-js",
-            "./src/types"
+            "./src/types",
+            "jest"
         ]
     }
 }
