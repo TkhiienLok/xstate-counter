@@ -1,5 +1,6 @@
-import { interpret, Interpreter } from "xstate";
+import { interpret } from "xstate-ninja";
 import counterMachine, { CounterEvents } from "../machines/counter";
+import { Interpreter } from "xstate";
 
 type CounterService = Interpreter<
   CounterContext,
@@ -14,8 +15,9 @@ type CounterService = Interpreter<
 
 let service: CounterService;
 export const initCounterService = () => {
+  console.log("INIT service");
   if (!service) {
-    service = interpret(counterMachine).start();
+    service = interpret(counterMachine, { devTools: true }).start();
   }
   return service;
 };
